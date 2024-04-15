@@ -19,7 +19,6 @@ function criaNovoItemDaLista(textoDaTarefa) {
     listaTarefas.appendChild(novoItem);
 }
 
-// Função para criar uma caixa de seleção para uma tarefa
 function criaInputCheckBoxTarefa(idTarefa) {
     const inputTarefa = document.createElement('input');
     inputTarefa.type = 'checkbox';
@@ -27,7 +26,6 @@ function criaInputCheckBoxTarefa(idTarefa) {
     return inputTarefa;
 }
 
-// Função para alternar o estado de uma tarefa
 function mudaEstadoTarefa(idTarefa) {
     const tarefaSelecionada = document.getElementById(idTarefa);
     const botaoSelecionado = document.getElementById(`bot${idTarefa}`);
@@ -38,11 +36,9 @@ function mudaEstadoTarefa(idTarefa) {
         tarefaSelecionada.style.textDecoration = 'line-through';
         botaoSelecionado.style.display = 'inline-block';
     }
-    // Salvar tarefas no armazenamento local após a alteração de estado
     salvarTarefasNoLocalStorage();
 }
 
-// Função para criar um botão para ocultar uma tarefa
 function criaBotao(idTarefa) {
     const botaoesconde = document.createElement('input');
     botaoesconde.setAttribute('type', 'button');
@@ -53,15 +49,13 @@ function criaBotao(idTarefa) {
     return botaoesconde;
 }
 
-// Função para ocultar uma tarefa
 function ocultaTarefa(idTarefa) {
     const tarefaSelecionada = document.getElementById(idTarefa);
     tarefaSelecionada.style.display = 'none';
-    // Salvar tarefas no armazenamento local após ocultar
+  
     salvarTarefasNoLocalStorage();
 }
 
-// Função para criar um botão de rádio para editar uma tarefa
 function criaRadio(idTarefa) {
     const radioAltera = document.createElement('input');
     radioAltera.setAttribute('type', 'radio');
@@ -71,29 +65,47 @@ function criaRadio(idTarefa) {
     return radioAltera;
 }
 
-// Função para editar uma tarefa
 function editaTarefa(idTarefa) {
     const antigaTarefa = document.getElementById(idTarefa);
     if (antigaTarefa) {
         const novoTexto = prompt('Editar tarefa:', antigaTarefa.innerText);
         if (novoTexto !== null) {
+            // Salvar estado atual do checkbox e do estilo de texto
+            const checkboxTarefa = antigaTarefa.querySelector('input[type="checkbox"]');
+            const checkboxMarcado = checkboxTarefa.checked;
+            const estiloTexto = antigaTarefa.style.textDecoration;
+
             antigaTarefa.innerText = novoTexto;
             const radioTarefa = antigaTarefa.querySelector('input[type="radio"]');
-            const checkboxTarefa = antigaTarefa.querySelector('input[type="checkbox"]');
             const botaoTarefa = antigaTarefa.querySelector('input[type="button"]');
             if (radioTarefa) radioTarefa.remove();
             if (checkboxTarefa) checkboxTarefa.remove();
             if (botaoTarefa) botaoTarefa.remove();
+
+            // Recria o checkbox quando estiver marcado marcado
             antigaTarefa.appendChild(criaInputCheckBoxTarefa(idTarefa));
+            if (checkboxMarcado) {
+                const novoCheckbox = antigaTarefa.querySelector('input[type="checkbox"]');
+                novoCheckbox.checked = true;
+            }
+
             antigaTarefa.appendChild(criaRadio(idTarefa));
             antigaTarefa.appendChild(criaBotao(idTarefa));
-            // Salvar tarefas no armazenamento local após editar
+
+            if (estiloTexto === 'line-through') {
+                const botaoOcultar = antigaTarefa.querySelector('input[type="button"]');
+                if (botaoOcultar) {
+                    botaoOcultar.style.display = 'inline-block';
+                }
+            }
+
             salvarTarefasNoLocalStorage();
         }
     }
 }
 
-// Função para mostrar todas as tarefas ocultas
+
+
 function mostraTarefasOcultas() {
     const listaTarefas = document.getElementById('lista_de_tarefas').children;
     for (let i = 0; i < listaTarefas.length; i++) {
@@ -110,7 +122,6 @@ function mostraTarefasOcultas() {
 
 
 
-// Função para salvar tarefas no armazenamento local
 function salvarTarefasNoLocalStorage() {
     const listaTarefas = document.getElementById('lista_de_tarefas').innerHTML;
     localStorage.setItem('tarefas', listaTarefas);
@@ -126,13 +137,11 @@ function salvarTarefasNoLocalStorage() {
 }
 
 
-/// Função para carregar tarefas do armazenamento local
 function carregarTarefasDoLocalStorage() {
     const listaTarefas = localStorage.getItem('tarefas');
     if (listaTarefas) {
         document.getElementById('lista_de_tarefas').innerHTML = listaTarefas;
 
-        // Carregar estados dos checkboxes
         const estadosCheckboxes = JSON.parse(localStorage.getItem('estados_checkboxes'));
         if (estadosCheckboxes) {
             for (const idTarefa in estadosCheckboxes) {
@@ -148,5 +157,5 @@ function carregarTarefasDoLocalStorage() {
 }
 
 
-// Carregar tarefas do armazenamento local quando a página é carregada
+
 window.onload = carregarTarefasDoLocalStorage;
