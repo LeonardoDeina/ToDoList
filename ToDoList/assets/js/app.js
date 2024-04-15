@@ -93,17 +93,60 @@ function editaTarefa(idTarefa) {
     }
 }
 
+// Função para mostrar todas as tarefas ocultas
+function mostraTarefasOcultas() {
+    const listaTarefas = document.getElementById('lista_de_tarefas').children;
+    for (let i = 0; i < listaTarefas.length; i++) {
+        const tarefa = listaTarefas[i];
+        if (tarefa.style.display === 'none') {
+            tarefa.style.display = 'block';
+            const checkbox = tarefa.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                checkbox.checked = true; // Marca o checkbox se existir
+            }
+        }
+    }
+}
+
+
+
 // Função para salvar tarefas no armazenamento local
 function salvarTarefasNoLocalStorage() {
     const listaTarefas = document.getElementById('lista_de_tarefas').innerHTML;
     localStorage.setItem('tarefas', listaTarefas);
+
+    // Salvar estados dos checkboxes
+    const checkboxes = document.querySelectorAll('#lista_de_tarefas input[type="checkbox"]');
+    const estadosCheckboxes = {};
+    checkboxes.forEach(checkbox => {
+        const idTarefa = checkbox.parentElement.id;
+        estadosCheckboxes[idTarefa] = checkbox.checked;
+    });
+    localStorage.setItem('estados_checkboxes', JSON.stringify(estadosCheckboxes));
 }
 
-// Função para carregar tarefas do armazenamento local
+
+/// Função para carregar tarefas do armazenamento local
 function carregarTarefasDoLocalStorage() {
     const listaTarefas = localStorage.getItem('tarefas');
-    if (listaTarefas) document.getElementById('lista_de_tarefas').innerHTML = listaTarefas;
+    if (listaTarefas) {
+        document.getElementById('lista_de_tarefas').innerHTML = listaTarefas;
+
+        // Carregar estados dos checkboxes
+        const estadosCheckboxes = JSON.parse(localStorage.getItem('estados_checkboxes'));
+        if (estadosCheckboxes) {
+            for (const idTarefa in estadosCheckboxes) {
+                if (estadosCheckboxes.hasOwnProperty(idTarefa)) {
+                    const checkbox = document.querySelector(`#${idTarefa} input[type="checkbox"]`);
+                    if (checkbox) {
+                        checkbox.checked = estadosCheckboxes[idTarefa];
+                    }
+                }
+            }
+        }
+    }
 }
+
 
 // Carregar tarefas do armazenamento local quando a página é carregada
 window.onload = carregarTarefasDoLocalStorage;

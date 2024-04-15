@@ -65,3 +65,21 @@ body{
 #lista_de_tarefas li input[type="button"]:hover {
     background-color: #c82333; 
 }
+
+#div_area_nova_tarefa button{
+    background-color: green;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#div_area_nova_tarefa  .Botrev{
+    background-color: blue;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
