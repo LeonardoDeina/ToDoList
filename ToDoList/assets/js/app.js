@@ -1,9 +1,12 @@
 // Função para adicionar uma tarefa à lista
 function adicionaTarefaNaLista() {
     const novaTarefa = document.getElementById('input_nova_tarefa').value;
-    criaNovoItemDaLista(novaTarefa);
-    // Salvar tarefas no armazenamento local
-    salvarTarefasNoLocalStorage();
+    if (novaTarefa.trim() !== '') { 
+        criaNovoItemDaLista(novaTarefa);
+        salvarTarefasNoLocalStorage();
+    } else {
+        alert('Por favor, insira uma tarefa válida.'); 
+    }
 }
 
 // Função para criar um novo item de tarefa
