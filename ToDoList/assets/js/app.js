@@ -1,4 +1,4 @@
-// Função para adicionar uma tarefa à lista
+
 function adicionaTarefaNaLista() {
     const novaTarefa = document.getElementById('input_nova_tarefa').value;
     if (novaTarefa.trim() !== '') { 
@@ -9,7 +9,6 @@ function adicionaTarefaNaLista() {
     }
 }
 
-// Função para criar um novo item de tarefa
 function criaNovoItemDaLista(textoDaTarefa) {
     const listaTarefas = document.getElementById('lista_de_tarefas');
     let qtdTarefas = listaTarefas.children.length;
@@ -73,7 +72,7 @@ function editaTarefa(idTarefa) {
     if (antigaTarefa) {
         const novoTexto = prompt('Editar tarefa:', antigaTarefa.innerText);
         if (novoTexto !== null) {
-            // Salvar estado atual do checkbox e do estilo de texto
+            
             const checkboxTarefa = antigaTarefa.querySelector('input[type="checkbox"]');
             const checkboxMarcado = checkboxTarefa.checked;
             const estiloTexto = antigaTarefa.style.textDecoration;
@@ -85,7 +84,7 @@ function editaTarefa(idTarefa) {
             if (checkboxTarefa) checkboxTarefa.remove();
             if (botaoTarefa) botaoTarefa.remove();
 
-            // Recria o checkbox quando estiver marcado marcado
+            
             antigaTarefa.appendChild(criaInputCheckBoxTarefa(idTarefa));
             if (checkboxMarcado) {
                 const novoCheckbox = antigaTarefa.querySelector('input[type="checkbox"]');
@@ -117,7 +116,7 @@ function mostraTarefasOcultas() {
             tarefa.style.display = 'block';
             const checkbox = tarefa.querySelector('input[type="checkbox"]');
             if (checkbox) {
-                checkbox.checked = true; // Marca o checkbox se existir
+                checkbox.checked = true; 
             }
         }
     }
@@ -129,7 +128,6 @@ function salvarTarefasNoLocalStorage() {
     const listaTarefas = document.getElementById('lista_de_tarefas').innerHTML;
     localStorage.setItem('tarefas', listaTarefas);
 
-    // Salvar estados dos checkboxes
     const checkboxes = document.querySelectorAll('#lista_de_tarefas input[type="checkbox"]');
     const estadosCheckboxes = {};
     checkboxes.forEach(checkbox => {
@@ -162,3 +160,4 @@ function carregarTarefasDoLocalStorage() {
 
 
 window.onload = carregarTarefasDoLocalStorage;
+                          
